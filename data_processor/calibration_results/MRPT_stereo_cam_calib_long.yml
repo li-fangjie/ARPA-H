@@ -1,0 +1,51 @@
+%YAML 1.2
+---
+calibration_results:
+  final_rmse: 2.670227588942524
+  good_image_pairs: 95
+  iters: 631
+left:
+  camera_matrix:
+    cols: 3
+    data: [2186.424308169936, 0, 1072.978841718827, 0, 2186.498255790752, 534.5598793040949, 0, 0, 1]
+    rows: 3
+  camera_name: camera1
+  distortion_coefficients:
+    cols: 0
+    data: []
+    rows: 0
+  distortion_model: none
+  focal_length_meters: 0
+  image_height: 1080
+  image_width: 1920
+  projection_matrix:
+    cols: 4
+    data: [2186.424308169936, 0, 1072.978841718827, 0, 0, 2186.498255790752, 534.5598793040949, 0, 0, 0, 1, 0]
+    rows: 3
+  rectification_matrix:
+    cols: 3
+    data: [1, 0, 0, 0, 1, 0, 0, 0, 1]
+    rows: 3
+right:
+  camera_matrix:
+    cols: 3
+    data: [2195.597871511723, 0, 827.7811117132981, 0, 2188.954383945233, 513.2184121962878, 0, 0, 1]
+    rows: 3
+  camera_name: camera1
+  distortion_coefficients:
+    cols: 0
+    data: []
+    rows: 0
+  distortion_model: none
+  focal_length_meters: 0
+  image_height: 1080
+  image_width: 1920
+  projection_matrix:
+    cols: 4
+    data: [2195.597871511723, 0, 827.7811117132981, 0, 0, 2188.954383945233, 513.2184121962878, 0, 0, 0, 1, 0]
+    rows: 3
+  rectification_matrix:
+    cols: 3
+    data: [1, 0, 0, 0, 1, 0, 0, 0, 1]
+    rows: 3
+right_camera_pose: [-0.009247 0.016948 0.001020 0.999924 0.010602 -0.005260 -0.003486]
