@@ -7,6 +7,7 @@ import Utils
 import matplotlib.pyplot as plt
 from scipy.spatial.transform import Rotation as R
 
+# TODO: finish this
 
 folderPath = "../data/20240823_phantom_stereo/prostate"
 
