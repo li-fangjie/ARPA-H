@@ -1,2 +1,3 @@
 cur_vslam_models/
 data/
+__pycache__/

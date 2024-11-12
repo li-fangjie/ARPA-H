@@ -55,14 +55,17 @@ def loadVideoTimestamps(filePath, **args):
 def processDirectory(directory):
     """Process the given directory to find and align the data."""
     # Find files in the directory
-    ndiFiles = [f for f in os.listdir(directory) if f.startswith("ndi") and f.endswith(".csv") and not f.endswith("original.csv") and not f.endswith("aligned.csv")]
-    videoFiles = [f for f in os.listdir(directory) if f.startswith("endoscope_timestamp_") and f.endswith(".csv")]
+    # ndiFiles = [f for f in os.listdir(directory) if f.startswith("ndi") and f.endswith(".csv") and not f.endswith("original.csv") and not f.endswith("aligned.csv")]
+    videoFiles = [f for f in os.listdir(directory) if f.endswith(".avi")]
+    ndiFiles = [f for f in os.listdir(directory) if (f.split(".")[0]+".avi") not in videoFiles and f.endswith(".csv") and not f.endswith("original.csv") and not f.endswith("aligned.csv")]
+    videoTimeFiles = [f for f in os.listdir(directory) if (f.split(".")[0]+".avi") in videoFiles and f.endswith(".csv")]
+
 
     # Load the data from the files
-    if not ndiFiles or not videoFiles:
+    if not ndiFiles or not videoTimeFiles:
         print("No appropriate files found in the directory.")
         return
-    print(f"Found {len(ndiFiles)} NDI files and {len(videoFiles)} video timestamp files.")
+    print(f"Found {len(ndiFiles)} NDI files and {len(videoTimeFiles)} video timestamp files.")
     
     # trackerRawDataList = []
     # for ndiFileI in range(len(ndiFiles)):
@@ -82,7 +85,7 @@ def processDirectory(directory):
     for ndiFileI in range(len(ndiFiles)):
         # Assuming only ONE VIDEO FILE, otherwise this can be extended to handle multiple files
         ndiFilePath = os.path.join(directory, ndiFiles[ndiFileI])
-        videoFilePath = os.path.join(directory, videoFiles[0])
+        videoFilePath = os.path.join(directory, videoTimeFiles[0])
         outputFileName = ndiFiles[ndiFileI].split(".csv")[0] + "_aligned.csv"
 
         print(f"Processing NDI file: {ndiFilePath}")

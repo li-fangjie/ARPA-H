@@ -80,7 +80,7 @@ def execute_global_registration(source_down, target_down, source_fpfh,
     return result
 
 def refine_registration(source, target, source_fpfh, target_fpfh, voxel_size):
-    distance_threshold = voxel_size * 5 # 2 
+    distance_threshold = voxel_size * 10000 # 2 
     print(":: Point-to-plane ICP registration is applied on original point")
     print("   clouds to refine the alignment. This time we use a strict")
     print("   distance threshold %.3f." % distance_threshold)
@@ -96,35 +96,43 @@ def refine_registration(source, target, source_fpfh, target_fpfh, voxel_size):
         o3d.pipelines.registration.TransformationEstimationPointToPoint(with_scaling=True))
     return result
 
-voxel_size = 1  # means 0.3 mm for this dataset
-source, target, source_down, target_down, source_fpfh, target_fpfh = prepare_dataset(
-    voxel_size,
-    ply_paths=["/media/fj/Data/Projects/ARPA-H/data/20241011/CT_segmentations/run2_vslam_map_centered.ply", "/media/fj/Data/Projects/ARPA-H/data/20241011/CT_segmentations/urethra_tube_1.ply"]
-    )
 
-result_ransac = execute_global_registration(source_down, target_down,
-                                            source_fpfh, target_fpfh,
-                                            voxel_size)
-print(result_ransac)
-print(result_ransac.transformation)
-draw_registration_result(source_down, target_down, result_ransac.transformation)
+if __name__ == "__main__":
+    voxel_size = 1  # means 0.3 mm for this dataset
+    # source, target, source_down, target_down, source_fpfh, target_fpfh = prepare_dataset(
+    #     voxel_size,
+    #     ply_paths=["/media/fj/Data/Projects/ARPA-H/data/20241011/CT_segmentations/run2_vslam_map_centered.ply", "/media/fj/Data/Projects/ARPA-H/data/20241011/CT_segmentations/urethra_tube_1.ply"]
+    #     )
 
-threshold = 0.02
-trans_init = np.eye(4)
-print("\n\n")
+    source, target, source_down, target_down, source_fpfh, target_fpfh = prepare_dataset(
+        voxel_size,
+        ply_paths=["/media/fj/Data/Projects/ARPA-H/data/20241025_phantom_mono_tre/White/run_1/BPH/slam_reconstruction/points_centered.ply", "/media/fj/Data/Projects/ARPA-H/data/20241025_phantom_mono_tre/White/CT/BPH_tube_centered.ply"]
+        )
 
-print("Initial alignment")
-evaluation = o3d.pipelines.registration.evaluate_registration(
-    source, target, threshold, result_ransac.transformation)
-print(evaluation)
 
-radius_normal = voxel_size * 2 
-source.estimate_normals(o3d.geometry.KDTreeSearchParamHybrid(radius=radius_normal, max_nn=30))
-target.estimate_normals(o3d.geometry.KDTreeSearchParamHybrid(radius=radius_normal, max_nn=30))
+    result_ransac = execute_global_registration(source_down, target_down,
+                                                source_fpfh, target_fpfh,
+                                                voxel_size)
+    print(result_ransac)
+    print(result_ransac.transformation)
+    draw_registration_result(source_down, target_down, result_ransac.transformation)
 
-result_icp = refine_registration(source, target, source_fpfh, target_fpfh,
-                                 voxel_size)
-print(result_icp)
-print(result_icp.transformation)
-print(np.linalg.det(result_icp.transformation[:3, :3]))
-draw_registration_result(source, target, result_icp.transformation)
+    threshold = 0.02
+    trans_init = np.eye(4)
+    print("\n\n")
+
+    print("Initial alignment")
+    evaluation = o3d.pipelines.registration.evaluate_registration(
+        source, target, threshold, result_ransac.transformation)
+    print(evaluation)
+
+    radius_normal = voxel_size * 2 
+    source.estimate_normals(o3d.geometry.KDTreeSearchParamHybrid(radius=radius_normal, max_nn=30))
+    target.estimate_normals(o3d.geometry.KDTreeSearchParamHybrid(radius=radius_normal, max_nn=30))
+
+    result_icp = refine_registration(source, target, source_fpfh, target_fpfh,
+                                    voxel_size)
+    print(result_icp)
+    print(result_icp.transformation)
+    print(np.linalg.det(result_icp.transformation[:3, :3]))
+    draw_registration_result(source, target, result_icp.transformation)
