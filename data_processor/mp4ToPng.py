@@ -10,7 +10,7 @@ def saveFramesAsPng(videoPath, outputFolder, newSize=None, frameRange=None, time
     if not os.path.exists(outputFolder):
         os.makedirs(outputFolder)
     if not timeStamps is None:
-        timeStamps = timeStamps.astype(np.int64)
+        timeStamps = timeStamps.astype(int)
     usedFrameTimes = []
     # Loop through each frame and save it as a PNG
     readIdx = 0
@@ -33,7 +33,8 @@ def saveFramesAsPng(videoPath, outputFolder, newSize=None, frameRange=None, time
                 # Save the frame as a PNG
                 cv.imwrite(filename, frame)
                 usedFrameTimes.append(curTimeStamp)
-                print(f"\r{readIdx}", end="")
+                print(f"\r{readIdx}, {curTimeStamp}", end="")
+                
                 readIdx+=1
         else:
             break
