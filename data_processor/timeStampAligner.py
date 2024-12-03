@@ -57,7 +57,7 @@ def processDirectory(directory):
     # Find files in the directory
     # ndiFiles = [f for f in os.listdir(directory) if f.startswith("ndi") and f.endswith(".csv") and not f.endswith("original.csv") and not f.endswith("aligned.csv")]
     videoFiles = [f for f in os.listdir(directory) if f.endswith(".avi")]
-    ndiFiles = [f for f in os.listdir(directory) if (f.split(".")[0]+".avi") not in videoFiles and f.endswith(".csv") and not f.endswith("original.csv") and not f.endswith("aligned.csv")]
+    ndiFiles = [f for f in os.listdir(directory) if (f.split(".")[0]+".avi") not in videoFiles and f.endswith(".csv") and not f.endswith("original.csv") and not f.endswith("_aligned.csv")]
     videoTimeFiles = [f for f in os.listdir(directory) if (f.split(".")[0]+".avi") in videoFiles and f.endswith(".csv")]
 
 
@@ -111,7 +111,7 @@ def processDirectory(directory):
         for toolI in range(trackerData.shape[1]):
             for elementI in range(trackerData.shape[2]):
                 # Interpolate each of the 6 DoF transformations
-                interpFunc = interp1d(trackerTimestamps[:, toolI], trackerData[:, toolI, elementI], kind='linear', fill_value="extrapolate")
+                interpFunc = interp1d(trackerTimestamps[:, toolI], trackerData[:, toolI, elementI], kind='linear', fill_value=np.nan, bounds_error=False) # fill_value="extrapolate"
                 interpolatedData[:, toolI, elementI] = interpFunc(videoTimestamps)
         
         interpolatedData = interpolatedData.reshape([interpolatedData.shape[0], -1])
