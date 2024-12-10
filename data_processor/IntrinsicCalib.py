@@ -66,7 +66,10 @@ def detectCheckerboardAndIntrinsicCalib(images, CHECKERBOARD_SHAPE=(10, 7), CHEC
 
     if not savePath is None:
         # Optionally, save the results to a file
-        np.savez(savePath, ret=ret, camera_matrix=camera_matrix, dist_coeffs=dist_coeffs, rvecs=rvecs, tvecs=tvecs)
+        if returnUsedFileNames:
+            np.savez(savePath, ret=ret, camera_matrix=camera_matrix, dist_coeffs=dist_coeffs, rvecs=rvecs, tvecs=tvecs, usedImages=usedImages)
+        else:
+            np.savez(savePath, ret=ret, camera_matrix=camera_matrix, dist_coeffs=dist_coeffs, rvecs=rvecs, tvecs=tvecs)
 
     if returnUsedFileNames:
         return ret, camera_matrix, dist_coeffs, rvecs, tvecs, usedImages
